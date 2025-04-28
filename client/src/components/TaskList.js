@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import TaskForm from './TaskForm';
 import TaskItem from './TaskItem';
+import { API_ENDPOINTS, axiosInstance } from '../config/api';
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -12,7 +12,7 @@ const TaskList = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/tasks', {
+      const response = await axiosInstance.get(API_ENDPOINTS.TASKS.BASE, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTasks(response.data);
@@ -27,8 +27,8 @@ const TaskList = () => {
 
   const handleAddTask = async (taskData) => {
     try {
-      const response = await axios.post(
-        'http://localhost:5000/api/tasks',
+      const response = await axiosInstance.post(
+        API_ENDPOINTS.TASKS.BASE,
         taskData,
         {
           headers: { Authorization: `Bearer ${token}` }
@@ -42,8 +42,8 @@ const TaskList = () => {
 
   const handleUpdateTask = async (id, updates) => {
     try {
-      const response = await axios.put(
-        `http://localhost:5000/api/tasks/${id}`,
+      const response = await axiosInstance.put(
+        API_ENDPOINTS.TASKS.BY_ID(id),
         updates,
         {
           headers: { Authorization: `Bearer ${token}` }
@@ -57,7 +57,7 @@ const TaskList = () => {
 
   const handleDeleteTask = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${id}`, {
+      await axiosInstance.delete(API_ENDPOINTS.TASKS.BY_ID(id), {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTasks(tasks.filter(task => task._id !== id));
