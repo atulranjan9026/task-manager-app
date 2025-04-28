@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
+import { API_ENDPOINTS } from '../config/api';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ const Register = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await axios.post(API_ENDPOINTS.AUTH.REGISTER, {
         email,
         password
       });
